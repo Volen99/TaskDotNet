@@ -1,0 +1,33 @@
+﻿@model TaskDotNet.Web.ViewModels.Home.IndexViewModel
+
+@using TaskDotNet.Common
+
+@{ this.ViewData["Title"] = $"Welcome to {GlobalConstants.SystemName}!"; }
+
+@if (this.TempData["InfoMessage"] != null)
+{
+    <div role="alert" class="alert alert-success alert-dismissible">
+        <a class="close" href="#" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+        @this.TempData["InfoMessage"]
+    </div>
+}
+
+<div class="text-center">
+    <a asp-controller="Companies" asp-action="Create" class="btn btn-primary btn-lg">Create a new Company</a>
+</div>
+<hr />
+<div class="row">
+    @foreach (var company in Model.Companies)
+    {
+        <div class="col-md-4 media">
+            <img src="@company.ImageUrl" width="100" class="mr-3" alt="Company image">
+            <div class="media-body">
+                <h5 class="mt-0">
+                    <a href="@company.Url">
+                        @company.Name (@company.EmployeesCount)
+                    </a>
+                </h5>
+            </div>
+        </div>
+    }
+</div>

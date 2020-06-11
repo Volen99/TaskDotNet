@@ -1,0 +1,37 @@
+﻿@model IEnumerable<TaskDotNet.Web.ViewModels.Offices.OfficeViewModel>
+
+@{
+    int index = 1;
+}
+
+@foreach (var office in Model)
+{
+    <div class="media-body">
+        <ul class="list-inline list-unstyled text-left">
+            <strong>@(index++):</strong>
+            <li class="list-inline-item">
+                <i class="fas fa-user-edit"></i>Country: @office.Country
+            </li>
+            <li class="list-inline-item">
+                <i class="fas fa-calendar-alt"></i>City: @office.City
+            </li>
+            <li class="list-inline-item">
+                <i class="fas fa-comment-dots"></i>Street: @office.Street
+            </li>
+            <li class="list-inline-item">
+                <i class="fas fa-comment-dots"></i>StreetNumber: @office.StreetNumber
+            </li>
+            <li class="list-inline-item">
+                <i class="fas fa-comment-dots"></i>Is Headquarters: @office.IsHeadquarters
+            </li>
+        </ul>
+        @if (TempData["HasCurrentUserRights"].ToString() == "True")
+        {
+            <div class="text-left">
+                <a role="button" class="btn btn-primary" style="padding:3px" asp-controller="Offices" asp-action="Edit" asp-route-id="@office.Id">Edit</a>
+                <a role="button" class="btn btn-primary bg-danger" style="padding:3px" asp-controller="Offices" asp-action="Delete" asp-route-id="@office.Id">Delete</a>
+            </div>
+        }
+
+    </div>
+}

@@ -1,0 +1,148 @@
+﻿@model TaskDotNet.Web.ViewModels.Companies.CompanyViewModel
+
+@using TaskDotNet.Web.ViewModels.Offices;
+
+@{
+    this.ViewData["Title"] = Model.Name;
+}
+
+@if (this.TempData["InfoMessage"] != null)
+{
+    <div role="alert" class="alert alert-success alert-dismissible">
+        <a class="close" href="#" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+        @this.TempData["InfoMessage"]
+    </div>
+}
+
+
+<h1 class="display-3">@Model.Name</h1>
+
+@if (Model.HasCurrentUserRights)
+{
+    <div class="text-right">
+        <a role="button" class="btn btn-primary" style="padding:3px" asp-controller="Companies" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a role="button" class="btn btn-primary bg-danger" style="padding:3px" asp-controller="Companies" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+    </div>
+}
+
+<hr />
+<h6>Offices</h6>
+
+@{ 
+    TempData["HasCurrentUserRights"] = Model.HasCurrentUserRights;
+}
+<partial name="_OfficePartial" model="Model.Offices">
+
+    <hr />
+    @if (this.Model.HasCurrentUserRights)
+    {
+        var companyById = new Dictionary<string, string>
+        {
+            { 
+                "CompanyId", Model.Id.ToString()
+            }
+        };
+
+        <div>
+            <a class="btn btn-primary btn-lg" asp-controller="Employees" asp-action="Create" asp-all-route-data="companyById">Add an employee</a>
+        </div>
+
+        <div class="text-right" style="margin-top: -48px;">
+            <a class="btn btn-primary btn-lg" asp-controller="Offices" asp-action="Create" asp-all-route-data="companyById">Add a new office</a>
+        </div>
+    }
+
+    @foreach (var employee in Model.Employees)
+    {
+        <div class="media-body">
+            <ul class="list-inline list-unstyled text-center">
+                <p style="font-size:24px">@employee.FirstName @employee.LastName</p>
+                <li class="list-inline-item">
+                    <i class="fas fa-user-edit"></i>Expirence Level: @employee.ExpirenceLevel
+                </li>
+                <li class="list-inline-item">
+                    <i class="fas fa-user-edit"></i>Hire Date: @employee.HireDate
+                </li>
+                <li class="list-inline-item">
+                    <i class="fas fa-calendar-alt"></i>Salary @employee.Salary
+                </li>
+                <li class="list-inline-item">
+                    <i class="fas fa-comment-dots"></i>Vacation Days: @employee.VacationDays
+                </li>
+                @if (Model.HasCurrentUserRights)
+                {
+                    <div class="text-right">
+                        <a role="button" class="btn btn-primary" style="padding:3px" asp-controller="Employees" asp-action="Edit" asp-route-id="@employee.Id">Edit</a>
+                        <a role="button" class="btn btn-primary bg-danger" style="padding:3px" asp-controller="Employees" asp-action="Delete" asp-route-id="@employee.Id">Delete</a>
+                    </div>
+                }
+                <br />
+                <br />
+                <li class="list-inline-item">
+                    <i class="fas fa-comment-dots"></i> <strong>Offices:</strong>
+                    @{ 
+                        var employeeOffices = Model.Offices
+                            .Where(o => o.EmployeesOffices.Any(e => e.EmployeeId == employee.Id))
+                            .Select(x => new OfficeViewModel
+                            {
+                                Id = x.Id,
+                                Country = x.Country,
+                                City = x.City,
+                                Street = x.Street,
+                                StreetNumber = x.StreetNumber,
+                                IsHeadquarters = x.IsHeadquarters,
+                            })
+                            .ToList();
+                    }
+                    <br />
+                    <partial name="_OfficePartial" model="employeeOffices">
+                </li>
+            </ul>
+        </div>
+        <hr />
+    }
+
+<nav>
+    <ul class="pagination justify-content-center">
+        @if (this.Model.CurrentPage == 1)
+        {
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a class="page-link" asp-route="TaskDotNetCompany" asp-route-name="@this.Model.Name"
+                   asp-route-page="@(this.Model.CurrentPage - 1)">
+                    Previous
+                </a>
+            </li>
+        }
+
+        @for (int i = 1; i <= this.Model.PagesCount; i++)
+        {
+            var active = i == this.Model.CurrentPage ? "active" : string.Empty;
+            <li class="page-item @active">
+                <a class="page-link" asp-route="TaskDotNetCompany" asp-route-name="@this.Model.Name"
+                   asp-route-page="@i">
+                    @i
+                </a>
+            </li>
+        }
+
+        @if (this.Model.CurrentPage == this.Model.PagesCount)
+        {
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a class="page-link" asp-route="TaskDotNetCompany" asp-route-name="@this.Model.Name"
+                   asp-route-page="@(this.Model.CurrentPage + 1)">Next</a>
+            </li>
+        }
+    </ul>
+</nav>

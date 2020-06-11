@@ -1,0 +1,51 @@
+﻿@model TaskDotNet.Web.ViewModels.Companies.CompanyCreateInputModel
+
+<h1>@this.ViewData["Title"]</h1>
+
+<form method="post" asp-action="Create">
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="ImageUrl"></label>
+        <textarea asp-for="ImageUrl" class="form-control"></textarea>
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="OfficeCountry"></label>
+        <textarea asp-for="OfficeCountry" class="form-control"></textarea>
+        <span asp-validation-for="OfficeCountry" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="OfficeCity"></label>
+        <textarea asp-for="OfficeCity" class="form-control"></textarea>
+        <span asp-validation-for="OfficeCity" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="OfficeStreet"></label>
+        <textarea asp-for="OfficeStreet" class="form-control"></textarea>
+        <span asp-validation-for="OfficeStreet" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="OfficeStreetNumber"></label>
+        <textarea asp-for="OfficeStreetNumber" class="form-control"></textarea>
+        <span asp-validation-for="OfficeStreetNumber" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="OfficeIsHeadquarters"></label>
+         <input type="radio" asp-for="OfficeIsHeadquarters" value="@true"> Yes
+         <input type="radio" asp-for="OfficeIsHeadquarters" value="@false"> No
+        <span asp-validation-for="OfficeIsHeadquarters" class="text-danger"></span>
+    </div>
+
+    <hr />
+    <input type="submit" class="btn btn-primary" />
+</form>

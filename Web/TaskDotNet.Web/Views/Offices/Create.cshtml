@@ -1,0 +1,39 @@
+﻿@model TaskDotNet.Web.ViewModels.Offices.OfficeCreateInputModel
+
+    <form method="post" asp-action="Create">
+        <div>
+            <label asp-for="Country"></label>
+            <textarea asp-for="Country" class="form-control"></textarea>
+            <span asp-validation-for="Country" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="City"></label>
+            <textarea asp-for="City" class="form-control"></textarea>
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="Street"></label>
+            <textarea asp-for="Street" class="form-control"></textarea>
+            <span asp-validation-for="Street" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="StreetNumber"></label>
+            <textarea asp-for="StreetNumber" class="form-control"></textarea>
+            <span asp-validation-for="StreetNumber" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="IsHeadquarters"></label>
+            <input type="radio" asp-for="IsHeadquarters" value="@true"> Yes
+            <input type="radio" asp-for="IsHeadquarters" value="@false"> No
+            <span asp-validation-for="IsHeadquarters" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="CompanyId" />
+
+        <hr />
+        <input type="submit" class="btn btn-primary" />
+    </form>
